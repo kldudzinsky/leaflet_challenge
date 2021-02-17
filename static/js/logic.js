@@ -3,7 +3,7 @@
 // Create the tile layer that will be the background of our map
 var  myMap = L.map("map-id", {
     center: [37.09, -95.71],
-    zoom: 5
+    zoom: 3
 })
 
 L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -61,23 +61,35 @@ d3.json(baseurl, function(data) {
         return L.circleMarker(latlng, geojsonMarkerOptions);
       }
     }).addTo(myMap)
+    function getColor(d) {
+      return d < 1 ? 'rgb(255,255,255)' :
+            d < 2  ? 'rgb(255,225,225)' :
+            d < 3  ? 'rgb(255,195,195)' :
+            d < 4  ? 'rgb(255,165,165)' :
+            d < 5  ? 'rgb(255,135,135)' :
+            d < 6  ? 'rgb(255,105,105)' :
+            d < 7  ? 'rgb(255,75,75)' :
+            d < 8  ? 'rgb(255,45,45)' :
+            d < 9  ? 'rgb(255,15,15)' :
+                        'rgb(255,0,0)';
   }
-  
- function getColor(d) {
-        return d < 1 ? 'rgb(255,255,255)' :
-              d < 2  ? 'rgb(255,225,225)' :
-              d < 3  ? 'rgb(255,195,195)' :
-              d < 4  ? 'rgb(255,165,165)' :
-              d < 5  ? 'rgb(255,135,135)' :
-              d < 6  ? 'rgb(255,105,105)' :
-              d < 7  ? 'rgb(255,75,75)' :
-              d < 8  ? 'rgb(255,45,45)' :
-              d < 9  ? 'rgb(255,15,15)' :
-                          'rgb(255,0,0)';
+
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        labels = [];
+        div.innerHTML+='Magnitude<br><hr>'
+                for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1) + '">&nbsp&nbsp&nbsp&nbsp</i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
     }
-  
-    // Create a legend to display information about our map
-var legend = L.control({position: 'bottomright'});
+    return div;
     
+    };
     legend.addTo(myMap);
-  
+  }
+
+
