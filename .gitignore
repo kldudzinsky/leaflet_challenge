@@ -130,4 +130,6 @@ dmypy.json
 
 #config file 
 .config.js
-static/js/'config.js'
+.config.js
+#
+.DS_Store
