@@ -129,9 +129,7 @@ dmypy.json
 .pyre/
 
 #config file 
-*.config.js
 
-.config.js
 #
 .DS_Store
 
